@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import ErrorButton from '../error-button';
-import PeoplePage from '../people-page';
 import ErrorBoundry from "../error-boundry";
 import Row from '../row'
-import ItemDetails from '../item-details'
+import ItemDetails, { Record } from '../item-details/item-details'
 
 
 import './app.css';
@@ -41,7 +39,10 @@ export default class App extends Component {
         itemId={11}
         getData={getPerson}
         getImageUrl={getPersonImage}
-      />
+      >
+        <Record field="gender" label="Gender" />
+        <Record field="eyeColor" label="Eye Color" />
+      </ItemDetails>
     );
 
     const starshipDetails = (
@@ -49,7 +50,11 @@ export default class App extends Component {
         itemId={5} 
         getData={getStarship}
         getImageUrl={getStarshipImage}
-      />
+      >
+        <Record field="model" label="Model" />
+        <Record field="length" label="Length" />
+        <Record field="costInCredits" label="Cost" />
+      </ItemDetails>
     );
 
     return (
