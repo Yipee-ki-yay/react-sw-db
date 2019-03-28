@@ -1,64 +1,70 @@
 export default class SwapiService {
 
   _apiBase = 'https://swapi.co/api';
-  _imgBase = 'https://starwars-visualguide.com/assets/img';
+  _imageBase = 'https://starwars-visualguide.com/assets/img';
 
   getResource = async (url) => {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
-      throw new Error(`Could not fetch ${this._apiBase}${url}, received ${res.status}`);
+      throw new Error(`Could not fetch ${url}` +
+        `, received ${res.status}`)
     }
-
     return await res.json();
-  }
+  };
 
   getAllPeople = async () => {
     const res = await this.getResource(`/people/`);
-    return res.results.map(this._transformPerson);
-  }
+    return res.results
+      .map(this._transformPerson)
+      .slice(0, 5);
+  };
 
   getPerson = async (id) => {
     const person = await this.getResource(`/people/${id}/`);
     return this._transformPerson(person);
-  }
+  };
 
   getAllPlanets = async () => {
     const res = await this.getResource(`/planets/`);
-    return res.results.map(this._transformPlanet);
-  }
+    return res.results
+      .map(this._transformPlanet)
+      .slice(0, 5);
+  };
 
   getPlanet = async (id) => {
     const planet = await this.getResource(`/planets/${id}/`);
     return this._transformPlanet(planet);
-  }
+  };
 
   getAllStarships = async () => {
     const res = await this.getResource(`/starships/`);
-    return res.results.map(this._transformStarship);
-  }
+    return res.results
+      .map(this._transformStarship)
+      .slice(0, 5);
+  };
 
   getStarship = async (id) => {
     const starship = await this.getResource(`/starships/${id}/`);
     return this._transformStarship(starship);
-  }
+  };
 
   getPersonImage = ({id}) => {
-    return `${this._imgBase}/characters/${id}.jpg`
+    return `${this._imageBase}/characters/${id}.jpg`
   };
 
   getStarshipImage = ({id}) => {
-    return `${this._imgBase}/starships/${id}.jpg`
+    return `${this._imageBase}/starships/${id}.jpg`
   };
 
   getPlanetImage = ({id}) => {
-    return `${this._imgBase}/planets/${id}.jpg`
+    return `${this._imageBase}/planets/${id}.jpg`
   };
 
   _extractId = (item) => {
-    const idRegExp = /\/([0-9]*)\/$/; 
+    const idRegExp = /\/([0-9]*)\/$/;
     return item.url.match(idRegExp)[1];
-  }
+  };
 
   _transformPlanet = (planet) => {
     return {
@@ -66,9 +72,9 @@ export default class SwapiService {
       name: planet.name,
       population: planet.population,
       rotationPeriod: planet.rotation_period,
-      diameter: planet.diameter,
-    }
-  }
+      diameter: planet.diameter
+    };
+  };
 
   _transformStarship = (starship) => {
     return {
@@ -80,9 +86,9 @@ export default class SwapiService {
       length: starship.length,
       crew: starship.crew,
       passengers: starship.passengers,
-      cargoCapacity: starship.cargoCapacity
+      cargoCapacity: starship.cargo_capacity
     }
-  }
+  };
 
   _transformPerson = (person) => {
     return {
@@ -94,60 +100,3 @@ export default class SwapiService {
     }
   }
 }
-
-const swapi = new SwapiService();
-// swapi.getAllPeople().then((people) => {
-//   people.forEach(p => {
-//     console.log(p.name);
-//   });
-// });
-
-// swapi.getPerson(3).then((person) => {
-//   console.log(person.name);
-// });
-
-// swapi.getAllPlanets(3).then((planets) => {
-//   console.log(planets);
-// });
-
-swapi.getPlanet(3).then((planet) => {
-  console.log(planet.name);
-});
-
-swapi.getStarship(3).then((starship) => {
-  console.log(starship.name);
-});
-
-/**
- * 2
-  */
-
-// const getResource = async (url) => {
-//   const res = await fetch(url);
-
-//   if (!res.ok) {
-//     throw new Error(`Could not fetch ${url}, received ${res.status}`);
-//   }
-
-//   return await res.json();
-// }
-
-// getResource('https://swapi.co/api/people/1/')
-//   .then((body) => {
-//     console.log(body);
-//   })
-//   .catch((err) => {
-//     console.error('Could not fetch', err);
-//   });
-
-/**
- * 1
-  */
-
-// fetch('https://swapi.co/api/people/1/')
-//   .then((res) => {
-//     return res.json();
-//   })
-//   .then((body) => {
-//     // console.log(body);
-//   });
